@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using PlateformeAnnonceBackend.Models;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace PlateformeAnnonceBackend
 {
@@ -15,5 +16,13 @@ namespace PlateformeAnnonceBackend
         public DbSet<Notation> Notation { get; set; }
         public DbSet<Photo> Photo { get; set; }
         public DbSet<Utilisateur> Utilisateur { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
     }
+
+
+
 }
