@@ -115,5 +115,27 @@ namespace PlateformeAnnonceBackend.Controllers
         {
             return db.Utilisateur.Count(e => e.Id == id) > 0;
         }
+
+        [HttpPost, Route("api/authenticate")]
+        public IHttpActionResult Authenticate(Utilisateur utilisateur)
+        {
+            if (string.IsNullOrEmpty(utilisateur.Username) || string.IsNullOrEmpty(utilisateur.Password))
+                return BadRequest(message: "Paramètres manquant");
+
+            var user = db.Utilisateur
+                        .Where(s => s.Username == utilisateur.Username)
+                        .Where(s => s.Password == utilisateur.Password)
+                        .FirstOrDefault<Utilisateur>();
+
+            if (user == null)
+                return BadRequest(message:"Nom d'utilisateur ou mot de passe incorrect");
+
+            // return basic user info (without password) and token to store client side
+            return Ok(new
+            {
+                user
+            });
+        }
+
     }
 }

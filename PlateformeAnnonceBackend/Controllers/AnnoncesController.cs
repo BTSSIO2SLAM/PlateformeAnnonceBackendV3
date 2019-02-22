@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PlateformeAnnonceBackend;
@@ -20,7 +21,10 @@ namespace PlateformeAnnonceBackend.Controllers
         // GET: api/Annonces
         public IQueryable<Annonce> GetAnnonce()
         {
-            return db.Annonce;
+            //List<Annonce> listAnnonce = db.Annonce.ToList<Annonce>();
+            //Utilisateur utilisateur = listAnnonce[0].Utilisateur;
+
+            return db.Annonce.OrderByDescending(x => x.Id);
         }
 
         // GET: api/Annonces/5
@@ -79,11 +83,64 @@ namespace PlateformeAnnonceBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
+            //Categorie
+            Categorie categorie = db.Categorie.Find(annonce.CategorieID);
+            annonce.Categorie = categorie;
+
+            //Utilisateur
+            Utilisateur utilisateur = db.Utilisateur.Find(annonce.UtilisateurID);
+            annonce.Utilisateur = utilisateur;
+            
+            //db.Categorie.Attach(annonce.Categorie);
+            //db.Utilisateur.Attach(annonce.Utilisateur);
 
             db.Annonce.Add(annonce);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = annonce.Id }, annonce);
+        }
+
+        /* Api pour uploader une image */
+        // POST: api/ImageAnnonce
+        [HttpPost, Route("api/upload")]
+        public IHttpActionResult Post()
+        {
+            var httpRequest = HttpContext.Current.Request;
+
+            if (httpRequest.Files.Count < 1)
+            {
+                return BadRequest();
+            }
+
+            String filePath = "";
+
+            foreach (string file in httpRequest.Files)
+            {
+                var postedFile = httpRequest.Files[file];
+                filePath = HttpContext.Current.Server.MapPath("~/assets/" + postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                // NOTE: To store in memory use postedFile.InputStream
+                filePath = "http://localhost:59825/Assets/" + postedFile.FileName;
+            }
+
+            return Ok(filePath);
+        }
+
+        /* Api pour lister les annonces d'un utilisateur */
+        // GET: api/ImageAnnonce
+        [HttpGet, Route("api/getAnnonceByUtilisateur/{UtilisateurID}")]
+        public IHttpActionResult getAnnonceByUtilisateur(int UtilisateurID)
+        {
+            var annonces = db.Annonce
+                        .Where(s => s.UtilisateurID == UtilisateurID);
+
+            if (annonces == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(annonces);
         }
 
         // DELETE: api/Annonces/5

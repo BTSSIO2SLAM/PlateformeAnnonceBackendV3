@@ -29,12 +29,12 @@ namespace PlateformeAnnonceBackend.Models
         public int UtilisateurID { get; set; }
 
         [ForeignKey("UtilisateurID")]
-        public Utilisateur Utilisateur { get; set; }
+        public virtual Utilisateur Utilisateur { get; set; }
 
         public int CategorieID { get; set; }
 
         [ForeignKey("CategorieID")]
-        public Categorie Categorie { get; set; }
+        public virtual Categorie Categorie { get; set; }
 
         public Annonce() { }
 
