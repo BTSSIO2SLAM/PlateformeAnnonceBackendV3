@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace PlateformeAnnonceBackend.Models
 {
-    [Table("Commentaire")]
-    public class Commentaire
+    [Table("Favoris")]
+    public class Favoris
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [Required]
-        public string Contenu { get; set; }
 
         public int UtilisateurID { get; set; }
 
@@ -27,10 +24,7 @@ namespace PlateformeAnnonceBackend.Models
         [ForeignKey("AnnonceID")]
         public Annonce Annonce { get; set; }
 
-        public int NotationID { get; set; }
 
-        [ForeignKey("NotationID")]
-        public Notation Notation { get; set; }
-    
+
     }
 }

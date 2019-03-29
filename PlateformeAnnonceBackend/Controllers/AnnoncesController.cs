@@ -6,9 +6,11 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Newtonsoft.Json.Linq;
 using PlateformeAnnonceBackend;
 using PlateformeAnnonceBackend.Models;
 
@@ -75,15 +77,36 @@ namespace PlateformeAnnonceBackend.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+
         // POST: api/Annonces
         [ResponseType(typeof(Annonce))]
         public IHttpActionResult PostAnnonce(Annonce annonce)
         {
+            String filePath = "";
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
+            var httpRequest = HttpContext.Current.Request;
+
+            if (httpRequest.Files.Count > 0)
+            {               
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    filePath = HttpContext.Current.Server.MapPath("~/assets/" + postedFile.FileName);
+                    postedFile.SaveAs(filePath);
+                    // NOTE: To store in memory use postedFile.InputStream
+                    filePath = "http://localhost:59825/Assets/" + postedFile.FileName;
+                }
+            }
+
+           
+            //Image
+            annonce.UrlPhoto = filePath;
+
             //Categorie
             Categorie categorie = db.Categorie.Find(annonce.CategorieID);
             annonce.Categorie = categorie;
@@ -113,6 +136,11 @@ namespace PlateformeAnnonceBackend.Controllers
                 return BadRequest();
             }
 
+            Annonce annonce = new Annonce();
+
+            JObject json = JObject.Parse(httpRequest.Form[0]);
+            annonce = json.ToObject<Annonce>();
+
             String filePath = "";
 
             foreach (string file in httpRequest.Files)
@@ -124,7 +152,12 @@ namespace PlateformeAnnonceBackend.Controllers
                 filePath = "http://localhost:59825/Assets/" + postedFile.FileName;
             }
 
-            return Ok(filePath);
+            annonce.UrlPhoto = filePath;
+
+            db.Annonce.Add(annonce);
+            db.SaveChanges();
+
+            return Ok(annonce);
         }
 
         /* Api pour lister les annonces d'un utilisateur */

@@ -178,6 +178,7 @@
     <Compile Include="Controllers\AnnoncesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CommentairesController.cs" />
+    <Compile Include="Controllers\FavorisController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotationsController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
@@ -194,10 +195,23 @@
     <Compile Include="Migrations\201902190452161_Migration2.Designer.cs">
       <DependentUpon>201902190452161_Migration2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903280724515_addfavoris.cs" />
+    <Compile Include="Migrations\201903280724515_addfavoris.Designer.cs">
+      <DependentUpon>201903280724515_addfavoris.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903280733007_addfavoris2.cs" />
+    <Compile Include="Migrations\201903280733007_addfavoris2.Designer.cs">
+      <DependentUpon>201903280733007_addfavoris2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903280744421_addFavoris3.cs" />
+    <Compile Include="Migrations\201903280744421_addFavoris3.Designer.cs">
+      <DependentUpon>201903280744421_addFavoris3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Annonce.cs" />
     <Compile Include="Models\Categorie.cs" />
     <Compile Include="Models\Commentaire.cs" />
+    <Compile Include="Models\Favoris.cs" />
     <Compile Include="Models\Notation.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Utilisateur.cs" />
@@ -233,6 +247,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -293,6 +308,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902190452161_Migration2.resx">
       <DependentUpon>201902190452161_Migration2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903280724515_addfavoris.resx">
+      <DependentUpon>201903280724515_addfavoris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903280733007_addfavoris2.resx">
+      <DependentUpon>201903280733007_addfavoris2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903280744421_addFavoris3.resx">
+      <DependentUpon>201903280744421_addFavoris3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

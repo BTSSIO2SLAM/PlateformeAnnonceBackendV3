@@ -16,6 +16,7 @@ namespace PlateformeAnnonceBackend
         public DbSet<Notation> Notation { get; set; }
         public DbSet<Photo> Photo { get; set; }
         public DbSet<Utilisateur> Utilisateur { get; set; }
+        public DbSet<Favoris> Favoris { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

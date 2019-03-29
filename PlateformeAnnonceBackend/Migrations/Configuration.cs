@@ -9,7 +9,7 @@ namespace PlateformeAnnonceBackend.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(PlateformeAnnonceBackend.Context context)
