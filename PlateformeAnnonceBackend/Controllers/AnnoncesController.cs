@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Newtonsoft.Json.Linq;
-using PlateformeAnnonceBackend;
 using PlateformeAnnonceBackend.Models;
 
 namespace PlateformeAnnonceBackend.Controllers
@@ -21,80 +17,54 @@ namespace PlateformeAnnonceBackend.Controllers
         private Context db = new Context();
 
         // GET: api/Annonces
-        public IQueryable<Annonce> GetAnnonce()
-        {
-            //List<Annonce> listAnnonce = db.Annonce.ToList<Annonce>();
-            //Utilisateur utilisateur = listAnnonce[0].Utilisateur;
-
+        public IQueryable<Annonce> GetAnnonce() {
             return db.Annonce.OrderByDescending(x => x.Id);
         }
 
         // GET: api/Annonces/5
         [ResponseType(typeof(Annonce))]
-        public IHttpActionResult GetAnnonce(int id)
-        {
+        public IHttpActionResult GetAnnonce(int id) {
             Annonce annonce = db.Annonce.Find(id);
-            if (annonce == null)
-            {
+            if (annonce == null) {
                 return NotFound();
             }
-
             return Ok(annonce);
         }
 
         // PUT: api/Annonces/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutAnnonce(int id, Annonce annonce)
-        {
-            if (!ModelState.IsValid)
-            {
+        public IHttpActionResult PutAnnonce(int id, Annonce annonce) {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-
-            if (id != annonce.Id)
-            {
+            if (id != annonce.Id) {
                 return BadRequest();
             }
-
             db.Entry(annonce).State = EntityState.Modified;
-
-            try
-            {
+            try {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AnnonceExists(id))
-                {
+            catch (DbUpdateConcurrencyException) {
+                if (!AnnonceExists(id)) {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
         // POST: api/Annonces
         [ResponseType(typeof(Annonce))]
-        public IHttpActionResult PostAnnonce(Annonce annonce)
-        {
+        public IHttpActionResult PostAnnonce(Annonce annonce) {
             String filePath = "";
-
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-
             var httpRequest = HttpContext.Current.Request;
-
-            if (httpRequest.Files.Count > 0)
-            {               
-                foreach (string file in httpRequest.Files)
-                {
+            if (httpRequest.Files.Count > 0) {               
+                foreach (string file in httpRequest.Files) {
                     var postedFile = httpRequest.Files[file];
                     filePath = HttpContext.Current.Server.MapPath("~/assets/" + postedFile.FileName);
                     postedFile.SaveAs(filePath);
@@ -102,11 +72,8 @@ namespace PlateformeAnnonceBackend.Controllers
                     filePath = "http://localhost:59825/Assets/" + postedFile.FileName;
                 }
             }
-
-           
             //Image
             annonce.UrlPhoto = filePath;
-
             //Categorie
             Categorie categorie = db.Categorie.Find(annonce.CategorieID);
             annonce.Categorie = categorie;
